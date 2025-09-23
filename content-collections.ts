@@ -25,7 +25,7 @@ const pages = defineCollection({
     }
     return {
       ...page,
-      path: `/${path}`,
+      path: `/${path.replace(/\\/g, '/')}`,
       toc,
       title: page.title ?? title,
       content,

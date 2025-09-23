@@ -1,0 +1,212 @@
+---
+title: Git Conventions
+---
+
+## Conventional Commits
+
+All commit messages must adhere to the [Conventional Commits specification](https://www.conventionalcommits.org/). This standard provides an easy set of rules for creating an explicit commit history, which makes it easier to write automated tools on top of.
+
+### Structure
+
+The commit message should be structured as follows:
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+
+The following are the allowed types:
+
+- **feat**: A new feature
+- **fix**: A bug fix
+- **chore**: Changes to the build process or auxiliary tools and libraries such as documentation generation
+- **docs**: Documentation only changes
+- **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- **refactor**: A code change that neither fixes a bug nor adds a feature
+- **perf**: A code change that improves performance
+- **test**: Adding missing tests or correcting existing tests
+
+### Scope
+
+The scope could be anything specifying place of the commit change. For example `(client)`, `(server)`, `(database)`, etc.
+
+### Description
+
+The description contains a succinct description of the change:
+
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize the first letter
+- no dot (.) at the end
+
+### Body
+
+Optional body with more detailed explanatory text.
+
+### Footer
+
+Optional footer should contain any information about **Breaking Changes** and is also the place to reference GitHub issues that this commit **Closes**.
+
+### Example
+
+Here are a few examples of Conventional Commit messages:
+
+**1. New Feature:**
+
+```
+feat(api): implement user authentication endpoint
+
+Adds a new endpoint `/api/auth/login` that allows users to log in with their email and password.
+The endpoint returns a JWT token that can be used for subsequent requests.
+
+- Implemented password hashing using bcrypt.
+- Added validation for email and password fields.
+
+Closes #123
+```
+
+**2. Bug Fix:**
+
+```
+fix(auth): prevent crash on invalid login attempt
+
+The login page was crashing when the user entered an incorrect password.
+This was caused by a null pointer exception in the error handling logic.
+This commit adds a null check to prevent the crash.
+
+Fixes #456
+```
+
+**3. Documentation Change:**
+
+```
+docs(readme): update installation instructions
+
+The README file had outdated instructions for installing the project dependencies.
+This commit updates the instructions to use `pnpm` instead of `npm`.
+```
+
+**4. Refactoring:**
+
+```
+refactor(user-service): extract user validation logic
+
+The user creation logic in the `UserService` was getting too complex.
+This commit extracts the user validation logic into a separate `UserValidator` class.
+This improves the separation of concerns and makes the code easier to test.
+```
+
+**5. Performance Improvement:**
+
+```
+perf(image-upload): optimize image compression
+
+The image upload process was slow due to unoptimized image compression.
+This commit replaces the existing compression library with a faster one and adjusts the compression level.
+This reduces the image upload time by 50%.
+```
+
+**6. Breaking Change:**
+
+```
+feat(api)!: remove deprecated `/api/v1` endpoints
+
+This commit removes the deprecated `/api/v1` endpoints.
+All clients should use the new `/api/v2` endpoints instead.
+
+BREAKING CHANGE: The `/api/v1` endpoints are no longer available.
+```
+
+---
+
+## Git Workflow
+
+We use a simplified version of [GitFlow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow).
+
+### Branches
+
+- **main**: This branch contains production-ready code.
+- **develop**: This is the main development branch where all completed features are merged.
+- **feature branches**: For new features, create a branch from `develop`. The branch name should be descriptive, e.g., `feature/user-authentication`.
+- **bugfix branches**: For bug fixes, create a branch from `develop`. The branch name should be `bugfix/issue-description`.
+- **hotfix branches**: For critical production bugs, create a branch from `main`. The branch name should be `hotfix/issue-description`.
+
+---
+
+## Pull Requests (PRs)
+
+Pull Requests are the heart of collaboration in our workflow. A good PR helps reviewers understand the changes and provide better feedback.
+
+### Creating a Great PR
+
+- **Keep it Small:** Aim for small, focused PRs that address a single concern. This makes them easier and faster to review. For larger features, break the work into smaller, incremental PRs.
+- **Write a Clear Description:** Use a PR template to provide a clear and concise description of the changes. Explain the "what" and the "why" of your changes. Link to any relevant issues or tickets.
+- **Self-Review First:** Before requesting a review, review your own code. You can catch many small mistakes and add comments to explain complex parts of your code.
+- **Ensure Tests Pass:** All tests and CI checks must be passing before you request a review.
+
+### The Review Process
+
+- **Be Constructive:** Provide feedback that is constructive, respectful, and clear.
+- **Offer Solutions:** When you identify a problem, try to suggest a potential solution.
+- **Use Conventional Comments:** Use labels like `praise`, `nitpick`, `suggestion`, `issue`, `question` to standardize feedback.
+
+---
+
+## Merging and Pull Requests
+
+### Merging Strategy
+
+All feature and bugfix branches must be merged into `develop` through a pull request. Hotfix branches are merged into both `main` and `develop`.
+
+- **Squash and Merge:** We use "Squash and Merge" when merging PRs into `develop`. This combines all commits from the feature branch into a single commit on the `develop` branch, which helps to keep the Git history clean and readable.
+- **Merge Commit:** For merging `develop` into `main` or for hotfixes, a merge commit is used to preserve the history of the release.
+
+### Merge Conflict Prevention
+
+Merge conflicts happen, but you can minimize them by following these practices:
+
+- **Keep Branches Short-Lived:** The longer a branch lives, the more it diverges from `develop`, increasing the chances of conflicts.
+- **Rebase Frequently:** Regularly rebase your feature branch with the latest changes from `develop`. This allows you to resolve conflicts locally and incrementally.
+
+```bash
+git checkout your-feature-branch
+git fetch origin
+git rebase origin/develop
+```
+
+---
+
+## Trunk-Based Development
+
+As an alternative to GitFlow, for projects that require rapid iteration and continuous delivery, we sometimes use Trunk-Based Development.
+
+### Key Principles
+
+- **Single Trunk:** All developers work from a single `main` branch.
+- **Short-Lived Feature Branches:** Feature branches are very short-lived (a few hours or a day) and are merged into the trunk quickly.
+- **Feature Flags:** Incomplete features are hidden behind feature flags, allowing developers to merge code into the trunk without affecting the production environment.
+- **Always Releasable:** The trunk is always kept in a stable and deployable state.
+
+---
+
+## References and Videos
+
+### Articles
+
+- [Conventional Commits Specification](https://www.conventionalcommits.org/)
+- [GitFlow Workflow by Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/)
+- [Trunk-Based Development](https://trunkbaseddevelopment.com/)
+- [Atlassian's guide on GitFlow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+- [Google's guide on Trunk-Based Development](https://cloud.google.com/architecture/devops/devops-tech-trunk-based-development)
+
+### Videos
+
+- [Pull Request Best Practices](https://www.youtube.com/watch?v=1z_wJd-cQ0E)
+- [What is a Pull Request?](https://www.youtube.com/watch?v=r_hG9clb6_A)
+- [GitFlow Explained](https://www.youtube.com/watch?v=1_G0-A0-4T4)
+- [Trunk-Based Development Explained](https://www.youtube.com/watch?v=t_20oDk0A0s)
+- [Resolving Merge Conflicts](https://www.youtube.com/watch?v=zPFSF9pn_eA)

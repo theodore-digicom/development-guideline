@@ -173,5 +173,41 @@
         ]
       }
     ]
+  },
+  {
+    "type": "category",
+    "name": "Guidelines",
+    "children": [
+      {
+        "type": "link",
+        "name": "Introduction",
+        "href": "/docs/guidelines"
+      },
+      {
+        "type": "link",
+        "name": "Git",
+        "href": "/docs/guidelines/git"
+      },
+      {
+        "type": "link",
+        "name": "Project Structure",
+        "href": "/docs/guidelines/project-structure"
+      },
+      {
+        "type": "link",
+        "name": "State Management",
+        "href": "/docs/guidelines/state-management"
+      },
+      {
+        "type": "link",
+        "name": "Styling",
+        "href": "/docs/guidelines/styling"
+      },
+      {
+        "type": "link",
+        "name": "Testing",
+        "href": "/docs/guidelines/testing"
+      }
+    ]
   }
 ]

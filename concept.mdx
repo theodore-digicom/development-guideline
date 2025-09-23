@@ -1,0 +1,50 @@
+Okay, here's an expanded version of the documentation, incorporating more detail and a formal tone:
+
+**Project Conventions Document**
+
+**1. Introduction**
+This document outlines the coding conventions and best practices to be followed by all developers working on this project. Adhering to these guidelines will ensure code consistency, maintainability, and collaboration efficiency.
+
+**2. Commit Messages**
+All commit messages must adhere to the Conventional Commits specification. This standardizes commit messages, making the project's history more readable and enabling automated tools for changelog generation.
+
+*   **Structure:** `type(scope): description`
+*   **Types:** `feat`, `fix`, `chore`, `docs`, `style`, `refactor`, `perf`, `test`
+*   **Scope:** Optional, specifies the affected part of the codebase.
+*   **Description:** A concise explanation of the change.
+
+**3. File Naming**
+Consistent file naming conventions improve code readability and maintainability.
+
+*   **Components:** Use kebab-case (e.g., `user-profile.tsx`).
+*   **Other Files:** Use camelCase (e.g., `useUserData.ts`, `apiTypes.ts`).
+
+**4. Component Structure**
+Components should be organized into a clear and logical folder structure.
+
+*   **General Components:** Store in a top-level `components` folder outside the `app` directory.
+*   **Module-Specific Components:** Store within module folders inside the `app` directory, in a subfolder named `components`.
+*   **Nested Components:** For larger modules, create nested component folders as needed.
+
+**5. Hook Structure**
+Hooks should be organized similarly to components.
+
+*   **Global Hooks:** Store in a top-level `hooks` folder outside the `app` directory.
+*   **Module-Specific Hooks:** Store within module folders inside the `app` directory, in a subfolder named `hooks`.
+
+**6. Styling**
+This project utilizes Tailwind CSS and Shadcn UI for styling.
+
+*   **Tailwind CSS:** Keep Tailwind classes directly within component files.
+*   **Shadcn UI:** Follow Shadcn UI conventions for custom styles.
+
+**7. Testing**
+A comprehensive testing strategy ensures code reliability and prevents regressions.
+
+*   **Integration Tests:** Focus on testing the interactions between components and services. Use React Testing Library and Jest.
+*   **End-to-End Tests:** Simulate user flows to ensure the application works as expected.
+
+**8. Conclusion**
+By adhering to these conventions, we can ensure a consistent and high-quality codebase. If you have any questions or suggestions for improvement, please discuss them with the team.
+
+Does this expanded version meet your needs?

@@ -1,0 +1,106 @@
+---
+title: Project Structure and Naming Conventions
+---
+
+<img src="https://i.redd.it/oyq77oksyse31.png" alt="the hardest thing is programing : file naming" width="300" />
+
+A consistent project structure and naming convention are crucial for maintaining a clean and scalable codebase. This guide outlines the best practices for organizing your Next.js project.
+
+## Component and Hook Conventions
+
+### Component Structure
+
+- **Global Components:** Shared, reusable components that are used across multiple features are stored in the `/components` directory at the root of the project.
+
+- **Module-Specific Components:** Components that are only used within a specific feature or module should be stored in a `components` sub-directory within that module's folder. For example: `app/user/components/`.
+
+- **Large Modules:** If a module becomes too large, you can create sub-modules within it, each with its own `components` folder. For example, if the "user" module has a complex "settings" area, you could have: `app/user/settings/components/`.
+
+**Example:**
+
+```
+/components
+├── button.tsx
+└── input.tsx
+
+/app
+└── user
+    ├── components
+    │   ├── user-profile.tsx
+    │   └── user-avatar.tsx
+    └── settings
+        └── components
+            └── notification-settings.tsx
+```
+
+### Component Naming and File Structure
+
+- **Naming:** Component files should be named using **kebab-case** (e.g., `user-profile.tsx`).
+- **Co-location:** To keep related files together, we create a directory for each component that has its own styles or tests.
+
+**Example:**
+
+```
+/components
+└── user-profile/
+    ├── user-profile.tsx
+    ├── user-profile.module.css
+    └── user-profile.test.tsx
+```
+
+### Hook Structure
+
+The same principles apply to hooks:
+
+- **Global Hooks:** Shared, reusable hooks are stored in the `/hooks` directory at the root of the project.
+- **Module-Specific Hooks:** Hooks that are only used within a specific feature are stored in a `hooks` sub-directory within that module's folder (e.g., `app/user/hooks/`).
+
+### Hook Naming
+
+- Hook files should be named using **camelCase** with a `use` prefix (e.g., `useUserData.ts`).
+
+## Page and Routing Conventions
+
+### Page and Layout Structure
+
+- **`page.tsx`**: This file is required to make a route segment publicly accessible. It renders the UI for a specific route.
+- **`layout.tsx`**: This is a shared UI for a segment and its children. Layouts are ideal for things like headers, footers, and sidebars that are consistent across a section of the app.
+
+### Route Grouping for Layouts
+
+Next.js route groups allow you to create different layouts for different sections of your application without affecting the URL structure. This is done by wrapping a folder's name in parentheses, e.g., `(marketing)`.
+
+This is extremely useful for creating a structured layout system. For example, you can have a separate layout for your marketing pages and another for your application's dashboard.
+
+**Example:**
+
+```
+/app
+├── (marketing)/
+│   ├── layout.tsx  // Marketing layout (e.g., with a marketing header/footer)
+│   ├── page.tsx      // Renders at /
+│   └── about/
+│       └── page.tsx  // Renders at /about
+└── (dashboard)/
+    ├── layout.tsx  // Dashboard layout (e.g., with a sidebar and user menu)
+    ├── dashboard/
+    │   └── page.tsx  // Renders at /dashboard
+    └── settings/
+        └── page.tsx  // Renders at /settings
+```
+
+In this example, the `(marketing)` and `(dashboard)` folders are route groups. They don't affect the URL, but they allow you to have separate layouts for the marketing pages and the dashboard pages.
+
+### Dynamic Pages
+
+- **Naming:** Dynamic segments are created by wrapping a file or folder name in square brackets. We use **snake_case** for the parameter name inside the brackets (e.g., `[user_id].tsx`). This parameter is then passed to your page component.
+
+- **Potential Collisions:** Be aware that dynamic routes can collide with static routes. For example, if you have `app/blog/[slug].tsx` and `app/blog/about.tsx`, the `about.tsx` route will be rendered for `/blog/about`. However, if you navigate to `/blog/anything-else`, the `[slug].tsx` route will be rendered.
+
+### Advanced Routing
+
+Next.js offers powerful advanced routing patterns:
+
+- **Catch-all Routes `[...slug]`:** This will match any number of segments. For example, `app/shop/[...slug]/page.tsx` will match `/shop/a`, `/shop/a/b`, `/shop/a/b/c`, etc.
+
+- **Optional Catch-all Routes `[[...slug]]`:** This is similar to catch-all routes, but it also matches the route without any segments. For example, `app/docs/[[...slug]]/page.tsx` will match `/docs`, `/docs/a`, `/docs/a/b`, etc. This is very useful for documentation sites.

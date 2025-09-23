@@ -1,0 +1,153 @@
+---
+title: State Management
+---
+
+<img src="https://cdn.hackernoon.com/images/dgMWclIH0hOQrGwUJQcwZOCc97j1-2023-05-25T12:40:50.328Z-cli34h9cp00590cs66wdda09n" alt="React developers and state management meme" width="400" />
+
+Developers have been debating state management for as long as client-side applications have existed. As developers ourselves, we have our opinions, but this guide isn't about declaring a single "right" way. Instead, it's about understanding state from its source and choosing the right tool for the job.
+
+The key to taming state management is to stop thinking about the size of your application and start thinking about where your data comes from. We can categorize state into three main sources: User State, Application State, and Server State.
+
+## 1. User State (Form State)
+
+User state is any data that comes directly from the user, typically through forms and inputs.
+
+### Controlled vs. Uncontrolled
+
+You might have heard of controlled and uncontrolled components. While uncontrolled components can be simpler for very basic forms, we strongly recommend using **controlled components** for any non-trivial form. This gives you more control and predictability.
+
+### The Right Tool: `react-hook-form`
+
+Instead of managing form state manually with `useState`, we recommend using a dedicated form library. Our library of choice is **`react-hook-form`**.
+
+`react-hook-form` is a lightweight and performant library that simplifies form state management. It handles form submission, validation, and error handling with minimal code.
+
+**Why `react-hook-form`?**
+
+- **Performance:** It isolates component re-renders, which means your entire form doesn't re-render on every keystroke.
+- **Simplicity:** The `useForm` hook provides everything you need to manage your form's state.
+- **Validation:** It integrates seamlessly with schema validation libraries like `Zod`.
+
+**Example:**
+
+```tsx
+import { useForm } from 'react-hook-form';
+
+function MyForm() {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const onSubmit = data => console.log(data);
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register("firstName", { required: true })} />
+      {errors.firstName && <span>This field is required</span>}
+      <input type="submit" />
+    </form>
+  );
+}
+```
+
+## 2. Application State (UI State)
+
+Application state is data that is specific to the UI and its current state. This includes things like:
+
+- Dark mode / theme
+- Modal visibility
+- Step flows in a multi-step form
+- User authentication status (e.g., `isAuthenticated`)
+
+### The Right Tool: `Zustand`
+
+For managing application state, we recommend **`Zustand`**.
+
+Zustand is a small, fast, and scalable state management solution. It's based on hooks and provides a simple API that is easy to learn and use.
+
+**Why `Zustand`?**
+
+- **Minimal Boilerplate:** No need for providers, actions, or reducers. Just create a store and use it in your components.
+- **Simplicity:** The API is very intuitive.
+- **Performance:** It only re-renders components that are subscribed to the specific state that changed.
+
+**Example:**
+
+```tsx
+import { create } from 'zustand';
+
+const useModalStore = create((set) => ({
+  isModalOpen: false,
+  openModal: () => set({ isModalOpen: true }),
+  closeModal: () => set({ isModalOpen: false }),
+}));
+
+function MyComponent() {
+  const { isModalOpen, openModal, closeModal } = useModalStore();
+
+  return (
+    <div>
+      <button onClick={openModal}>Open Modal</button>
+      {isModalOpen && (
+        <div>
+          <h1>Modal Content</h1>
+          <button onClick={closeModal}>Close</button>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+While state machines (like XState) are incredibly powerful for complex, multi-step flows, they can be overkill for simple UI state. Zustand hits the sweet spot for most application state needs.
+
+## 3. Server State (Async State)
+
+Server state is data that is fetched from an API and stored on the client. This is arguably the most complex type of state to manage because it involves more than just the data itself. You also need to handle:
+
+- Loading states
+- Error states
+- Caching
+- Refetching and data synchronization
+
+### The Right Tool: `React Query`
+
+For managing server state, we use **`React Query`**.
+
+`React Query` is a powerful data-fetching library that simplifies the process of fetching, caching, and updating data from a server. It's not just a data fetching library; it's a server-state management library.
+
+**Why `React Query`?**
+
+- **Declarative Data Fetching:** You declare what data you need, and `React Query` handles the rest.
+- **Automatic Caching:** It automatically caches data and provides it to your components, which makes your application feel faster.
+- **Background Refetching:** It can automatically refetch data in the background to keep it up-to-date.
+- **Devtools:** It comes with excellent devtools that let you inspect your queries and their cached data.
+
+**Example:**
+
+```tsx
+import { useQuery } from '@tanstack/react-query';
+
+function MyComponent() {
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['repoData'],
+    queryFn: () =>
+      fetch('https://api.github.com/repos/tannerlinsley/react-query').then(res =>
+        res.json()
+      ),
+  });
+
+  if (isLoading) return 'Loading...';
+  if (error) return 'An error has occurred: ' + error.message;
+
+  return (
+    <div>
+      <h1>{data.name}</h1>
+      <p>{data.description}</p>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+- **Keep State Local When Possible:** Not all state needs to be global. If a piece of state is only used by a single component, keep it in that component's local state (`useState`).
+- **Choose the Right Tool for the Job:** Don't use a server-state library to manage form state. Use the right tool for each type of state.
+- **Derive State When Possible:** Instead of storing derived data in state, calculate it on the fly. This avoids state synchronization issues.
