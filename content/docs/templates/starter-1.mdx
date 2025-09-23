@@ -1,0 +1,72 @@
+---
+title: Next.js & Shadcn UI Starter
+---
+
+This starter template is a production-ready boilerplate for building modern web applications with Next.js and Shadcn UI. It's designed to be a solid foundation for any new project, with a focus on best practices, developer experience, and performance.
+
+## Features
+
+*   **Next.js 14:** The latest version of the most popular React framework, with the App Router, Server Actions, and more.
+*   **Shadcn UI:** A collection of beautifully designed, accessible, and customizable components that you can copy and paste into your apps.
+*   **Tailwind CSS:** A utility-first CSS framework for rapidly building custom user interfaces.
+*   **ESLint & Prettier:** A pre-configured setup for code linting and formatting, to ensure code quality and consistency.
+*   **Dark Mode:** A user-friendly dark mode implementation, powered by `next-themes`.
+*   **Content Collections:** A simple and efficient way to manage your MDX content.
+
+## Getting Started
+
+To get started with this template, you can clone the repository from GitHub and install the dependencies.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-repo/nextjs-shadcn-starter.git
+```
+
+### 2. Install Dependencies
+
+```bash
+cd nextjs-shadcn-starter
+pnpm install
+```
+
+### 3. Run the Development Server
+
+```bash
+pnpm dev
+```
+
+This will start the development server on `http://localhost:3000`.
+
+## Project Structure
+
+The project structure is designed to be simple, scalable, and easy to navigate.
+
+```
+/
+├── content/          # Your MDX content
+├── public/           # Static assets
+├── src/
+│   ├── app/          # Your Next.js app
+│   ├── components/   # Shared components
+│   ├── lib/          # Utility functions
+│   └── styles/       # Global styles
+├── next.config.js    # Next.js configuration
+└── ...
+```
+
+## Customization
+
+### Theme
+
+The theme can be customized by editing the CSS variables in `src/app/globals.css`. You can change the colors, fonts, and other design tokens to match your brand.
+
+### Components
+
+You can add new components to the `src/components` directory. We recommend using the `shadcn/ui` CLI to add new components, as it will automatically add the necessary files and dependencies.
+
+```bash
+npx shadcn-ui@latest add button
+```
+
+This will add a new `Button` component to your project. You can then import it into your pages and use it like any other React component.

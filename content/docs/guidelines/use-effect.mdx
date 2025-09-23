@@ -1,0 +1,97 @@
+---
+title: You Might Not Need useEffect
+---
+
+> Why are you using `useEffect`? If your file has a `useEffect`, there is a 50% chance that file needs a refactor.
+
+This might sound like an exaggeration, but `useEffect` is one of the most misunderstood and misused hooks in React. While powerful, it's often a loaded gun that developers accidentally point at their own feet. This guide will help you understand when and how to use `useEffect` correctly, and when you should reach for a different tool.
+
+## A Cautionary Tale: The Infinite Loop That Crashed a Server
+
+Imagine a simple component that fetches some data. A junior developer writes this code:
+
+```tsx
+function MyComponent() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/data').then(res => res.json()).then(setData);
+  }); // No dependency array!
+
+  return <div>{JSON.stringify(data)}</div>;
+}
+```
+
+On the surface, this looks fine. But the missing dependency array means the effect runs on *every single render*. Here's what happens:
+
+1.  The component renders.
+2.  The `useEffect` runs, fetching data.
+3.  The `setData` function is called, which triggers a re-render.
+4.  Go back to step 1.
+
+This creates an infinite loop of requests to the `/api/data` endpoint. In a real-world application with thousands of users, this can quickly overload and crash a server. This isn't a hypothetical scenario; this kind of bug has taken down production systems.
+
+## How `useEffect` Works
+
+The purpose of `useEffect` is to **synchronize your component with an external system**. This could be a network request, the browser DOM, a third-party library, or any other system that is not part of React's state.
+
+The key to using `useEffect` correctly is the **dependency array**:
+
+- **No Dependency Array:** `useEffect(() => { ... })` - The effect runs on every render. **Avoid this.**
+- **Empty Dependency Array:** `useEffect(() => { ... }, [])` - The effect runs only once, when the component mounts. This is for one-time setup.
+- **Dependency Array with Values:** `useEffect(() => { ... }, [dep1, dep2])` - The effect runs whenever any of the dependencies change.
+
+`useEffect` can also return a **cleanup function**, which is crucial for preventing memory leaks when dealing with subscriptions or event listeners.
+
+## Common Mistakes and Bad Practices
+
+- **Mishandling the Dependency Array:** This is the most common source of bugs. Always include all reactive values (props, state) that are used inside the effect in the dependency array.
+- **Creating Infinite Loops:** If you update a state variable in an effect that also depends on that state variable, you'll create an infinite loop.
+- **Forgetting Cleanup:** Forgetting to clean up subscriptions or event listeners will lead to memory leaks.
+- **Using `async` Functions Directly:** You can't pass an `async` function directly to `useEffect`. Instead, define and call an `async` function *inside* the effect.
+- **Overusing `useEffect` for Derived State:** If you can calculate a value from existing props or state, do it directly in your render logic. Don't use an effect to update state with a derived value.
+
+## The Right Way to Use `useEffect`
+
+`useEffect` should be your last resort, not your first instinct. Before you reach for `useEffect`, ask yourself: "Am I trying to synchronize with an external system?"
+
+If the answer is yes, then `useEffect` is the right tool. Here are some valid use cases:
+
+- **Fetching data:** (Although we recommend using a server-state library for this).
+- **Subscribing to events:** (e.g., `window.addEventListener`).
+- **Interacting with the DOM directly:** (e.g., managing focus, animations).
+
+**Example: A Correct `useEffect` for an Event Listener**
+
+```tsx
+import { useState, useEffect } from 'react';
+
+function MousePosition() {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    function handleMouseMove(e) {
+      setPosition({ x: e.clientX, y: e.clientY });
+    }
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []); // Empty array means this effect runs only once
+
+  return <p>Mouse position: {position.x}, {position.y}</p>;
+}
+```
+
+## You Might Not Need `useEffect`
+
+Often, what you think requires an effect can be achieved in a simpler way:
+
+- **For data fetching, use a server-state library like `React Query`.** It handles caching, refetching, and loading/error states for you, so you don't need to write complex `useEffect` logic.
+- **For derived state, calculate it directly in your render logic.**
+- **For handling user events, use event handlers (`onClick`, `onChange`, etc.).**
+
+By thinking in terms of state and data flow instead of effects, you can write cleaner, more predictable, and more performant React components.

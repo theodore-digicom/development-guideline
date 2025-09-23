@@ -17,13 +17,7 @@ export const TopNav = () => {
           <Logo href="/" showText />
         </div>
         <div className="flex gap-2">
-          <nav className="hidden items-center justify-start gap-2 md:flex">
-            <Button variant="navitem" asChild>
-              <Link href="https://prose-ui.com">
-                Prose UI <ExternalLinkIcon size={16} />
-              </Link>
-            </Button>
-          </nav>
+  
 
           <div className="hidden items-center justify-start gap-2 md:flex">
             <Button variant="navitem" asChild>

@@ -1,5 +1,5 @@
 ---
-title: State Management
+title: Choosing the Right State Management Tool
 ---
 
 <img src="https://cdn.hackernoon.com/images/dgMWclIH0hOQrGwUJQcwZOCc97j1-2023-05-25T12:40:50.328Z-cli34h9cp00590cs66wdda09n" alt="React developers and state management meme" width="400" />
@@ -16,7 +16,7 @@ User state is any data that comes directly from the user, typically through form
 
 You might have heard of controlled and uncontrolled components. While uncontrolled components can be simpler for very basic forms, we strongly recommend using **controlled components** for any non-trivial form. This gives you more control and predictability.
 
-### The Right Tool: `react-hook-form`
+### Our Recommendation: `react-hook-form`
 
 Instead of managing form state manually with `useState`, we recommend using a dedicated form library. Our library of choice is **`react-hook-form`**.
 
@@ -56,9 +56,9 @@ Application state is data that is specific to the UI and its current state. This
 - Step flows in a multi-step form
 - User authentication status (e.g., `isAuthenticated`)
 
-### The Right Tool: `Zustand`
+### Our Recommendation: `Zustand`
 
-For managing application state, we recommend **`Zustand`**.
+For managing application state, our preferred tool is **`Zustand`**. Other popular options include Redux Toolkit and Jotai.
 
 Zustand is a small, fast, and scalable state management solution. It's based on hooks and provides a simple API that is easy to learn and use.
 
@@ -107,9 +107,9 @@ Server state is data that is fetched from an API and stored on the client. This 
 - Caching
 - Refetching and data synchronization
 
-### The Right Tool: `React Query`
+### Our Recommendation: `React Query`
 
-For managing server state, we use **`React Query`**.
+For managing server state, we use **`React Query`**. Another excellent option is SWR.
 
 `React Query` is a powerful data-fetching library that simplifies the process of fetching, caching, and updating data from a server. It's not just a data fetching library; it's a server-state management library.
 
