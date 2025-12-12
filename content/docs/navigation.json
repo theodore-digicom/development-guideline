@@ -30,9 +30,20 @@
         "href": "/docs/guidelines/git"
       },
       {
-        "type": "link",
+        "type": "folder",
         "name": "Project Structure",
-        "href": "/docs/guidelines/project-structure"
+        "children": [
+          {
+            "type": "link",
+            "name": "Next Js",
+            "href": "/docs/guidelines/project-structure/next-js"
+          },
+          {
+            "type": "link",
+            "name": "Tanstack Start",
+            "href": "/docs/guidelines/project-structure/tanstack-start"
+          }
+        ]
       },
       {
         "type": "folder",
